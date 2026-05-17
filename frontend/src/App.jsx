@@ -7,7 +7,6 @@ function App() {
   const [displayedText, setDisplayedText] = useState("");
   const [loading, setLoading] = useState(false);
   const [confidence, setConfidence] = useState(0);
-  const [listening, setListening] = useState(false);
 
   // Typing Animation
   useEffect(() => {
@@ -39,43 +38,6 @@ function App() {
     }
   }, [response]);
 
-  // Voice Input
-  const startListening = () => {
-
-    const SpeechRecognition =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Speech Recognition not supported");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = "en-US";
-
-    recognition.start();
-
-    setListening(true);
-
-    recognition.onresult = (event) => {
-      const transcript =
-        event.results[0][0].transcript;
-
-      setQuestion(transcript);
-      setListening(false);
-    };
-
-    recognition.onerror = () => {
-      setListening(false);
-    };
-
-    recognition.onend = () => {
-      setListening(false);
-    };
-  };
-
   const generateForecast = async () => {
     if (!question) return;
 
@@ -83,15 +45,21 @@ function App() {
     setResponse("");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/forecast", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: question,
-        }),
-      });
+
+      // LIVE RENDER BACKEND URL
+
+      const res = await fetch(
+        "https://oraclex-ai.onrender.com/forecast",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            question: question,
+          }),
+        }
+      );
 
       const data = await res.json();
 
@@ -100,6 +68,7 @@ function App() {
         data.error ||
         "No response received"
       );
+
     } catch (error) {
       setResponse("Error connecting to backend");
     }
@@ -153,21 +122,6 @@ function App() {
               }
             }}
           />
-
-          {/* Voice Button */}
-
-          <button
-            className={`mic-button ${
-              listening ? "mic-active" : ""
-            }`}
-            onClick={startListening}
-          >
-            {listening
-              ? "🎙 Listening..."
-              : "🎤 Voice Input"}
-          </button>
-
-          {/* Generate Button */}
 
           <button
             onClick={generateForecast}
