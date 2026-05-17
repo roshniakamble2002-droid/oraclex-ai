@@ -45,7 +45,19 @@ https://oraclex-ai.onrender.com
 - Python
 - Gemini AI API
 - Uvicorn
+# 📸 Screenshots
 
+## Hero Section
+
+![Hero](./screenshots/hero.png)
+
+## Forecast Result 1
+
+![Forecast1](./screenshots/forecast1.png)
+
+## Forecast Result 2
+
+![Forecast2](./screenshots/forecast2.png)
 ## Deployment
 - Vercel
 - Render
