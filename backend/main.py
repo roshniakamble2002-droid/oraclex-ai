@@ -1,32 +1,21 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import google.generativeai as genai
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
+app = FastAPI()
+
 # Configure Gemini API
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Use working Gemini model
-model = genai.GenerativeModel("models/gemini-2.5-flash")
+# Gemini model
+model = genai.GenerativeModel("gemini-1.5-flash")
 
-# Create FastAPI app
-app = FastAPI()
-
-# Enable CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-# Request schema
+# Request model
 class ForecastRequest(BaseModel):
     question: str
 
@@ -34,49 +23,33 @@ class ForecastRequest(BaseModel):
 @app.get("/")
 def home():
     return {
-        "message": "OracleX Backend Running Successfully"
+        "message": "OracleX Forecast API Running"
     }
 
-# Forecast route
+# Forecast endpoint
 @app.post("/forecast")
-def generate_forecast(data: ForecastRequest):
-    try:
+async def forecast(data: ForecastRequest):
 
-        prompt = f"""
-        You are OracleX AI Forecasting Engine.
+    prompt = f"""
+    You are OracleX Neural Forecast Engine.
 
-        Analyze this future prediction question carefully.
+    Predict future outcomes professionally and intelligently.
 
-        Question:
-        {data.question}
+    User Question:
+    {data.question}
 
-        Give response in this format:
+    Return:
+    - Prediction
+    - AI Confidence
+    - Future Impact
+    - Timeline
+    - Reasoning
 
-        Prediction:
-        (Short clear prediction)
+    Make the response futuristic and cinematic.
+    """
 
-        Probability:
-        (Give percentage)
+    response = model.generate_content(prompt)
 
-        Risks:
-        (2-3 short points)
-
-        Future Impact:
-        (Short future impact)
-
-        Rules:
-        - Keep answer concise
-        - Keep answer professional
-        - Do not use markdown symbols like ** or ##
-        """
-
-        response = model.generate_content(prompt)
-
-        return {
-            "forecast": response.text
-        }
-
-    except Exception as e:
-        return {
-            "forecast": f"Error: {str(e)}"
-        }
+    return {
+        "forecast": response.text
+    }
