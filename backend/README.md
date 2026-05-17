@@ -8,10 +8,10 @@ Built with cinematic UI, real-time AI forecasting, voice interaction, PDF report
 
 # 🌌 Live Demo
 
-Frontend:
+## Frontend
 https://oraclex-ai.vercel.app
 
-Backend:
+## Backend
 https://oraclex-ai.onrender.com
 
 ---
@@ -24,10 +24,10 @@ https://oraclex-ai.onrender.com
 - ⚡ Real-time prediction analytics
 - 🧠 Gemini AI integration
 - 🌐 Fully deployed cloud architecture
-- 📊 Prediction confidence metrics
-- 🕒 Live AI system clock
+- 📊 AI confidence metrics
+- 🕒 Live intelligent forecasting
 - 🎨 Cinematic futuristic UI
-- 📱 Responsive modern interface
+- 📱 Fully responsive interface
 
 ---
 
@@ -58,16 +58,14 @@ https://oraclex-ai.onrender.com
 2. Frontend sends request to FastAPI backend
 3. Backend communicates with Gemini AI
 4. Gemini generates intelligent prediction
-5. OracleX displays cinematic AI response
-6. User can export prediction as PDF report
+5. OracleX displays cinematic AI forecast
+6. User can export prediction reports
 
 ---
 
 # ⚙️ Installation
 
-## Frontend
+## Clone Repository
 
 ```bash
-cd frontend
-npm install
-npm run dev
+git clone https://github.com/roshniakamble2002-droid/oraclex-ai.git
